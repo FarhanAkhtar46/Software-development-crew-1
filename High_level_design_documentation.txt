@@ -1,0 +1,1 @@
+Based on the common functionalities and requirements of a school management system, I have outlined a preliminary high-level design and provided flow diagrams for key functionalities. This serves as a foundational structure that can be refined once detailed requirements from the SRS document are available.
