@@ -82,6 +82,6 @@ if st.button("Run Crew"):
         save_to_file(dev_results, 'bfhbfbf.txt')
         save_to_file(test_results, 'nfnfnfjfjnf.txt')
     else:
-        st.error("Error: Incondjddjd mplete results from Development and Testing Crew")
+        st.error("Error: mplete results from Development and Testing Crew")
 
     st.success('Files saved successfully!')
