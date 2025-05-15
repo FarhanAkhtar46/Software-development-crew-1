@@ -20,8 +20,12 @@ software_idea = st.text_input("Enter the software idea:", "school management sys
 
 def save_to_file(content, filename):
     """Save content to a file."""
-    with open(filename, 'w') as file:
-        file.write(content)
+    try:
+        with open(filename, 'w') as file:
+            file.write(content)
+        st.success(f"File saved: {filename}")
+    except Exception as e:
+        st.error(f"Error saving file {filename}: {e}")
 
 def create_and_run_crew(agents, tasks, crew_name):
     """Create and run a crew with the given agents and tasks."""
@@ -59,11 +63,15 @@ if st.button("Run Crew"):
     )
 
     # Save Documentation and Architecture outputs
-    if doc_results and arch_results:
+    if doc_results:
         save_to_file(doc_results, 'SRS_documentation.txt')
+    else:
+        st.error("Error: No results from Documentation Crew")
+
+    if arch_results:
         save_to_file(arch_results, 'High_level_design_documentation.txt')
     else:
-        st.error("Error: Incomplete results from Documentation and Architecture Crew")
+        st.error("Error: No results from Architecture Crew")
 
     # Run Development and Testing Crews
     dev_results = create_and_run_crew(
@@ -74,14 +82,18 @@ if st.button("Run Crew"):
     test_results = create_and_run_crew(
         agents=[tester_agent],
         tasks=[unit_testing],
-        crew_name="Testing wow"
+        crew_name="Testing Crew"
     )
 
     # Save Development and Testing outputs
-    if dev_results and test_results:
-        save_to_file(dev_results, 'bfhbfbf.txt')
-        save_to_file(test_results, 'yup.txt')
+    if dev_results:
+        save_to_file(dev_results, 'Developed_code.txt')
     else:
-        st.error("Error: mplete results from Development and Testing Crew")
+        st.error("Error: No results from Development Crew")
 
-    st.success('Files saved hurrey!')
+    if test_results:
+        save_to_file(test_results, 'Test_results.txt')
+    else:
+        st.error("Error: No results from Testing Crew")
+
+    st.success('All processes completed successfully!')
