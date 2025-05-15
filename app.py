@@ -54,12 +54,14 @@ if st.button("Run Crew"):
     architect_agent = agents.architect_agent()
     developer_agent = agents.software_developer_agent()
     tester_agent = agents.tester_agent()
+    cost_estimator_agent = agents.cost_estimator_agent()  # New agent for cost estimation
 
     # Define tasks
     documentation_creation = tasks.documentation_creation(project_manager_agent, software_idea)
     architecture_design = tasks.architecture_design(architect_agent, software_idea)
     code_development = tasks.code_development(developer_agent, software_idea)
     unit_testing = tasks.unit_testing(tester_agent, software_idea)
+    cost_estimation = tasks.cost_estimation(cost_estimator_agent, software_idea)  # New task for cost estimation
 
     # Run Documentation and Architecture Crews
     doc_results = create_and_run_crew(
@@ -92,5 +94,15 @@ if st.button("Run Crew"):
     # Save Development and Testing outputs
     handle_crew_results(dev_results, 'Developed_code.txt', "Development Crew")
     handle_crew_results(test_results, 'Test_results.txt', "Testing Crew")
+
+    # Run Cost Estimation Crew
+    cost_results = create_and_run_crew(
+        agents=[cost_estimator_agent],
+        tasks=[cost_estimation],
+        crew_name="Cost Estimation Crew"
+    )
+
+    # Save Cost Estimation output
+    handle_crew_results(cost_results, 'Cost_estimation.txt', "Cost Estimation Crew")
 
     st.success('All processes completed successfully!')
