@@ -24,16 +24,27 @@ def save_to_file(content, filename):
         with open(filename, 'w') as file:
             file.write(content)
         st.success(f"File saved: {filename}")
-    except Exception as e:
+    except (OSError, IOError) as e:
         st.error(f"Error saving file {filename}: {e}")
 
 def create_and_run_crew(agents, tasks, crew_name):
     """Create and run a crew with the given agents and tasks."""
-    st.write(f"Starting {crew_name}...")
-    crew = Crew(agents=agents, tasks=tasks, verbose=True)
-    results = crew.kickoff()
-    st.write(f"{crew_name} completed.")
-    return results
+    try:
+        st.write(f"Starting {crew_name}...")
+        crew = Crew(agents=agents, tasks=tasks, verbose=True)
+        results = crew.kickoff()
+        st.write(f"{crew_name} completed.")
+        return results
+    except Exception as e:
+        st.error(f"Error running {crew_name}: {e}")
+        return None
+
+def handle_crew_results(results, filename, crew_name):
+    """Handle the results of a crew and save them to a file."""
+    if results:
+        save_to_file(results, filename)
+    else:
+        st.error(f"Error: No results from {crew_name}")
 
 if st.button("Run Crew"):
     st.write("Running the Software Development Crew...")
@@ -63,15 +74,8 @@ if st.button("Run Crew"):
     )
 
     # Save Documentation and Architecture outputs
-    if doc_results:
-        save_to_file(doc_results, 'SRS_documentation.txt')
-    else:
-        st.error("Error: No results from Documentation Crew")
-
-    if arch_results:
-        save_to_file(arch_results, 'High_level_design_documentation.txt')
-    else:
-        st.error("Error: No results from Architecture Crew")
+    handle_crew_results(doc_results, 'SRS_documentation.txt', "Documentation Crew")
+    handle_crew_results(arch_results, 'High_level_design_documentation.txt', "Architecture Crew")
 
     # Run Development and Testing Crews
     dev_results = create_and_run_crew(
@@ -86,14 +90,7 @@ if st.button("Run Crew"):
     )
 
     # Save Development and Testing outputs
-    if dev_results:
-        save_to_file(dev_results, 'Developed_code.txt')
-    else:
-        st.error("Error: No results from Development Crew")
-
-    if test_results:
-        save_to_file(test_results, 'Test_results.txt')
-    else:
-        st.error("Error: No results from Hello Crew")
+    handle_crew_results(dev_results, 'Developed_code.txt', "Development Crew")
+    handle_crew_results(test_results, 'Test_results.txt', "Testing Crew")
 
     st.success('All processes completed successfully!')
