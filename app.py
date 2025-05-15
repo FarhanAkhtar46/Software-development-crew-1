@@ -24,20 +24,16 @@ def save_to_file(content, filename):
         with open(filename, 'w') as file:
             file.write(content)
         st.success(f"File saved: {filename}")
-    except (OSError, IOError) as e:
+    except Exception as e:
         st.error(f"Error saving file {filename}: {e}")
 
 def create_and_run_crew(agents, tasks, crew_name):
     """Create and run a crew with the given agents and tasks."""
-    try:
-        st.write(f"Starting {crew_name}...")
-        crew = Crew(agents=agents, tasks=tasks, verbose=True)
-        results = crew.kickoff()
-        st.write(f"{crew_name} completed.")
-        return results
-    except Exception as e:
-        st.error(f"Error running {crew_name}: {e}")
-        return None
+    st.write(f"Starting {crew_name}...")
+    crew = Crew(agents=agents, tasks=tasks, verbose=True)
+    results = crew.kickoff()
+    st.write(f"{crew_name} completed.")
+    return results
 
 if st.button("Run Crew"):
     st.write("Running the Software Development Crew...")
@@ -98,6 +94,6 @@ if st.button("Run Crew"):
     if test_results:
         save_to_file(test_results, 'Test_results.txt')
     else:
-        st.error("Error: No results from Testing Crew")
+        st.error("Error: No results from Hello Crew")
 
     st.success('All processes completed successfully!')
