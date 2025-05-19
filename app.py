@@ -105,4 +105,4 @@ if st.button("Run Crew"):
     # Save Cost Estimation output
     handle_crew_results(cost_results, 'Cost_ekkmation.txt', "Cost Estimation Crew")
 
-    st.success('All processes completed successfully!')
+    st.success('All  dddddnd d completed kdjkdessfully!')
